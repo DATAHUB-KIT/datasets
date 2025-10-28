@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee List</title>
+</head>
+<body>
+    <h2>Employee Records</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+        </tr>
+        {% for emp in employees %}
+        <tr>
+            <td>{{ emp[0] }}</td>
+            <td>{{ emp[1] }}</td>
+            <td>{{ emp[2] }}</td>
+            <td>{{ emp[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br><a href="/">Add Another Employee</a>
+</body>
+</html>
