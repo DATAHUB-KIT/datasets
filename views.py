@@ -37,3 +37,14 @@ def result(request):
         result= "<h1>You are diabetic.</h1>"
     return HttpResponse(result)
 
+#####################################################################################################
+
+from django.contrib import admin
+from django.urls import path
+from diabeticapp import views
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", views.index), 
+    path("predict/", views.predict), 
+    path("predict/result", views.result), 
+]
