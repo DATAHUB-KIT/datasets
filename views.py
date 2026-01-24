@@ -1,0 +1,39 @@
+from django.shortcuts import render
+import pandas as pd
+from django.http import HttpResponse
+
+from sklearn import metrics
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+def index(request): 
+	return render(request, "index.html") 
+
+# Create your views here.
+def predict(request): 
+	return render(request, "predict.html") 
+
+
+def result(request): 
+    data = pd.read_csv('diabetes.csv')
+    X = data[['Glucose','BloodPressure','Insulin','BMI','Age']]
+    y = data.Outcome 
+    #from sklearn.model_selection import train_test_split
+    #X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.25,random_state=0)
+    model = LogisticRegression() 
+    model.fit(X, y) 
+    val1 = float(request.GET['Glucose']) 
+    val2 = float(request.GET['Bloodpressure']) 
+    val3 = float(request.GET['Insulin']) 
+    val4 = float(request.GET['BMI']) 
+    val5 = float(request.GET['Age']) 
+    pred = model.predict([[val1, val2, val3,val4, val5]]) 
+    result = "" 
+    if pred == [0]: 
+        result = "<h1>You are not diabetic.</h1>"
+    else: 
+        
+        result= "<h1>You are diabetic.</h1>"
+    return HttpResponse(result)
+
