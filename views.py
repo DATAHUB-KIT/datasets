@@ -48,3 +48,60 @@ urlpatterns = [
     path("predict/", views.predict), 
     path("predict/result", views.result), 
 ]
+
+##################################################################################################
+
+
+index.html
+
+
+<html>
+<body> 
+	<div> 
+		<h1>Welcome to Diabetic prediction Project</h1> 
+		<br> 
+		<form action="predict"> 
+			<button class="btn" type="submit">Click Here</button> 
+		</form> 
+	</div> 
+
+
+
+</body> 
+
+</html>
+
+
+###########################################################################3
+
+
+result.html
+
+<Html>  
+    <head>   
+    <title>  
+    Patient Input Form 
+    </title>  
+    </head>  
+    <body bgcolor="Lightskyblue">  
+    <br>  
+    <br>  
+    <form action="result">  
+      
+    <label> Glucose </label>         
+    <input type="text" name="Glucose" size="15"/> <br> <br>  
+    <label> BloodPressure </label>     
+    <input type="text" name="Bloodpressure" size="15"/> <br> <br>  
+    <label> Insulin </label>         
+    <input type="text" name="Insulin" size="15"/> <br> <br>
+    <label> BMI </label>         
+    <input type="text" name="BMI" size="15"/> <br> <br>    
+    <label> Age</label>         
+    <input type="text" name="Age" size="15"/> <br> <br>  
+
+    
+    <input class="predict" type="submit" value="PREDICT"> 
+    </form>  
+    </body>  
+    </html>  
+
