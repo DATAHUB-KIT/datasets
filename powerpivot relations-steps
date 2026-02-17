@@ -1,0 +1,78 @@
+Step 2: Convert Data to Tables
+
+For each sheet:
+
+Select data
+
+Press Ctrl + T
+
+Check My table has headers
+
+Rename tables:
+
+Sales
+
+Products
+
+Regions
+
+Step 3: Add Tables to Power Pivot
+
+Go to Power Pivot tab
+
+Click Add to Data Model
+
+Do this for all three tables
+
+Now all tables are inside Power Pivot.
+
+ Step 4: Create Relationships
+
+Open Power Pivot → Manage.
+
+Go to Diagram View.
+
+Create relationships:
+
+Sales[ProductID] → Products[ProductID]
+
+Sales[RegionID] → Regions[RegionID]
+
+This connects the tables like a database.
+
+ Step 5: Create a Calculated Column
+
+In Sales table:
+
+Add a new column:
+
+TotalSales = [Quantity] * [Price]
+
+
+Press Enter.
+
+Now each row shows total sale value.
+
+ Step 6: Create a Measure (Important)
+
+Measures are used in analysis.
+
+Go to Calculation Area and create:
+
+Total Sales := SUM(Sales[TotalSales])
+
+ Step 7: Create Power Pivot Report
+
+Go to Insert → PivotTable
+
+Select Use this workbook’s Data Model
+
+Click OK
+
+Build report:
+
+Rows → ProductName
+
+Columns → RegionName
+
+Values → Total Sales
