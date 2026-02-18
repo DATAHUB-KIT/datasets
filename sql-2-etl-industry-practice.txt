@@ -1,0 +1,159 @@
+industry etl  sql load
+=======================
+
+SalesData.txt (Directory)
+          ↓
+Landing / Raw Table
+          ↓
+Staging Table (Cleaning)
+          ↓
+Validation Checks
+          ↓
+Final Reporting Table
+          ↓
+Excel / Power BI Reports
+
+=============================
+
+CREATE DATABASE RetailETL;
+
+USE RetailETL;
+
+CREATE TABLE Sales_Raw
+(
+    SaleID VARCHAR(50),
+    SaleDate VARCHAR(50),
+    CustomerName VARCHAR(100),
+    ProductName VARCHAR(100),
+    Quantity VARCHAR(50),
+    Price VARCHAR(50),
+    City VARCHAR(50)
+);
+
+
+
+CREATE TABLE Sales_Staging
+(
+    SaleID INT,
+    SaleDate DATE,
+    CustomerName VARCHAR(100),
+    ProductName VARCHAR(100),
+    Quantity INT,
+    Price DECIMAL(10,2),
+    City VARCHAR(50)
+);
+
+
+
+CREATE TABLE Sales_Final
+(
+    SaleID INT PRIMARY KEY,
+    SaleDate DATE,
+    CustomerName VARCHAR(100),
+    ProductName VARCHAR(100),
+    Quantity INT,
+    Price DECIMAL(10,2),
+    City VARCHAR(50),
+    LoadDate DATETIME DEFAULT GETDATE()
+);
+
+
+
+CREATE TABLE ETL_Log
+(
+    LoadID INT IDENTITY(1,1),
+    FileName VARCHAR(100),
+    LoadDate DATETIME,
+    ROWCNT INT,
+    Status VARCHAR(20),
+    Message VARCHAR(200)
+);
+
+
+TRUNCATE TABLE Sales_Raw;
+
+BULK INSERT Sales_Raw
+FROM 'C:\sqldata\Salesdata.csv'
+WITH
+(
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+
+TRUNCATE TABLE Sales_Staging;
+
+INSERT INTO Sales_Staging
+SELECT
+    CAST(SaleID AS INT),
+    CAST(SaleDate AS DATE),
+    CustomerName,
+    ProductName,
+    CAST(Quantity AS INT),
+    CAST(Price AS DECIMAL(10,2)),
+    City
+FROM Sales_Raw;
+
+-- Null check
+SELECT * FROM Sales_Staging
+WHERE SaleID IS NULL;
+
+-- Duplicate check
+SELECT SaleID, COUNT(*)
+FROM Sales_Staging
+GROUP BY SaleID
+HAVING COUNT(*) > 1;
+
+
+BEGIN TRANSACTION;
+
+TRUNCATE TABLE Sales_Final;
+
+INSERT INTO Sales_Final
+(
+    SaleID, SaleDate, CustomerName,
+    ProductName, Quantity, Price, City
+)
+SELECT
+    SaleID, SaleDate, CustomerName,
+    ProductName, Quantity, Price, City
+FROM Sales_Staging;
+
+COMMIT;
+
+
+INSERT INTO ETL_Log
+(FileName, LoadDate, ROWCNT, Status, Message)
+SELECT
+'SalesData.txt',
+GETDATE(),
+COUNT(*),
+'SUCCESS',
+'Data loaded successfully'
+FROM Sales_Final;
+
+SELECT
+    City,
+    SUM(Quantity * Price) AS TotalSales
+FROM Sales_Final
+GROUP BY City;
+
+select * from ETL_Log;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
