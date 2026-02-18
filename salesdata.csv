@@ -1,10 +1,4 @@
-year,sales
-2010,4500
-2011,5400
-2012,3400
-2013,7800
-2014,6900
-2015,3490
-2016,4568
-2017,4545
-2018,6789
+SaleID,SaleDate,CustomerName,ProductName,Quantity,Price,City
+1,2025-01-10,Ravi,Laptop,1,55000,Hyderabad
+2,2025-01-11,Sita,Mouse,2,500,Chennai
+3,2025-01-12,Arjun,Keyboard,1,1500,Bangalore
